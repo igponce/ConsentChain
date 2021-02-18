@@ -4,9 +4,6 @@ Simple test for in-memory blob
 
 class EncryptedBlob:
 
-  self.keyid = None # 
-  self.payload = b''
-
   def __init__ (self, key, data, encrypt=True):
     """
     :param key: symmetric encryption/decryption key id (from secrets)
@@ -36,6 +33,7 @@ class EncryptedBlob:
      
     return encrypt(data, the_key)
 
+  @staticmethod
   def _decrypt(data, keyid):
     """
     Decrypt the data
@@ -47,13 +45,14 @@ class EncryptedBlob:
        return data
     else:
        return decrypt(data, keyid)
-
-  def self.rekey(keyid):
+  
+  def rekey(self,keyid):
     """
     Rekey (re-encrypt) data with the given key.
     This operation makes possible to store keep fresh data
     in the consent chain.
     :param keyid: Key id (from a secrets store)
     """
-    self.blob = _encrypt( self._decrypt(), self.key), keyid)
+    self.blob = _encrypt(self._decrypt(self.blob, self.key), keyid)
     self.keyid = keyid
+
